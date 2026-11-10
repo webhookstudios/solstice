@@ -1,0 +1,16 @@
+#!/usr/bin/gjs -m
+// Starts Gleam. With a command (on, off, toggle, brightness, status) it runs on the command line.
+// GLEAM_DIR points at the folder holding main.js (a source checkout, for example).
+import GLib from 'gi://GLib';
+import System from 'system';
+
+const dir = GLib.getenv('GLEAM_DIR') ?? '/usr/share/gleam';
+const args = ARGV;
+
+if (args.length && !args[0].startsWith('--gapplication')) {
+    const {run} = await import(`file://${dir}/cli.js`);
+    System.exit(run(args));
+} else {
+    const {main} = await import(`file://${dir}/main.js`);
+    main(args);
+}
