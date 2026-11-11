@@ -1,6 +1,6 @@
 # Solstice
 
-*Formerly Gleam. Part of the Sedge family of webhookstudios apps.*
+*Part of the Sedge family of webhookstudios apps.*
 
 HDR settings for Ubuntu. Turn HDR on per display, and tune how bright normal content looks while HDR is on.
 
@@ -44,10 +44,10 @@ HDR must also be enabled in the monitor's own on-screen menu on some models, and
 
 ### With the deb package (recommended)
 
-Download `solstice_1.1.0_all.deb` from the [latest release](https://github.com/webhookstudios/solstice/releases/latest), then install it:
+Download `solstice_1.1.1_all.deb` from the [latest release](https://github.com/webhookstudios/solstice/releases/latest), then install it:
 
 ```bash
-sudo apt install ./solstice_1.1.0_all.deb
+sudo apt install ./solstice_1.1.1_all.deb
 ```
 
 Open Solstice from the apps menu. The package also adds a login item that re-applies your saved HDR brightness. Remove it with `sudo apt remove solstice`.

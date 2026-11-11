@@ -32,7 +32,7 @@ echo "/etc/xdg/autostart/$APP_ID.autostart.desktop" > "$STAGE/DEBIAN/conffiles"
 
 cat > "$STAGE/usr/share/doc/solstice/copyright" <<EOT
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Solstice (formerly Gleam)
+Upstream-Name: Solstice
 Source: https://github.com/webhookstudios/solstice
 
 Files: *
@@ -62,7 +62,7 @@ Section: gnome
 Priority: optional
 Homepage: https://github.com/webhookstudios/solstice
 Description: HDR settings and tuning for GNOME
- Solstice (formerly Gleam) turns HDR on and off for each display and tunes how bright normal
+ Solstice turns HDR on and off for each display and tunes how bright normal
  content looks in HDR. It also sets refresh rate, variable refresh rate,
  RGB range and wide color gamut, shows what each panel reports about its
  HDR abilities, and has a command line for keyboard shortcuts.
