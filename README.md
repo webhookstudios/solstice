@@ -42,10 +42,10 @@ HDR must also be enabled in the monitor's own on-screen menu on some models, and
 
 ### With the deb package (recommended)
 
-Download `gleam_1.0.0_all.deb` from the [latest release](https://github.com/webhookstudios/gleam/releases/latest), then install it:
+Download `gleam_1.0.1_all.deb` from the [latest release](https://github.com/webhookstudios/gleam/releases/latest), then install it:
 
 ```bash
-sudo apt install ./gleam_1.0.0_all.deb
+sudo apt install ./gleam_1.0.1_all.deb
 ```
 
 Open Gleam from the apps menu. The package also adds a login item that re-applies your saved HDR brightness. Remove it with `sudo apt remove gleam`.

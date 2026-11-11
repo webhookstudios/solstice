@@ -1,4 +1,6 @@
 // Command line: gleam on|off|toggle|brightness|status. Changes made here are saved right away.
+import GLib from 'gi://GLib';
+
 import * as DC from './displayconfig.js';
 import {hdrInfo, summary} from './edid.js';
 import * as Store from './store.js';
@@ -14,7 +16,8 @@ Commands:
   toggle [CONNECTOR...]        Turn HDR on if any target is off, otherwise off
   brightness PERCENT [CONNECTOR...]
                                Set SDR content brightness in HDR (10-210, default 100)
-  restore                      Re-apply remembered brightness (Gleam runs this at login)
+  restore [--once]             Re-apply remembered brightness. Gleam runs this at login;
+                               it keeps watching for 20 seconds unless --once is given
   help                         Show this help
 
 Connectors are names like DP-1 or HDMI-A-1 (see "gleam status").`;
@@ -87,6 +90,32 @@ function restore(only = null, timeoutMs = 4000) {
         print(`${connector}: brightness ${value}%`);
 }
 
+// At login GNOME can still be settling the displays, and a late mode set puts HDR brightness
+// back to 100%. Keep checking for a while and re-apply whenever it drifts.
+function restoreAtLogin(watchMs = 20000) {
+    restore(null, 15000);
+    const end = GLib.get_monotonic_time() + watchMs * 1000;
+    while (GLib.get_monotonic_time() < end) {
+        GLib.usleep(1000000);
+        let state, list;
+        try {
+            state = DC.getState();
+            list = DC.getBacklight().list;
+        } catch {
+            continue;
+        }
+        for (const m of state.monitors) {
+            const saved = Store.savedBrightness(m);
+            const b = list.find(e => e.connector === m.connector);
+            if (saved === null || !b || m.colorMode !== DC.ColorMode.BT2100 || b.value === Math.round(saved))
+                continue;
+            try {
+                print(`${m.connector}: brightness was reset to ${b.value}%, restoring ${DC.setBacklight(m.connector, saved)}%`);
+            } catch {}
+        }
+    }
+}
+
 // Returns an exit code.
 export function run(argv) {
     const [cmd, ...args] = argv;
@@ -97,7 +126,7 @@ export function run(argv) {
         case 'off': setHdr(args, false); break;
         case 'toggle': setHdr(args, null); break;
         case 'brightness': setBrightness(args); break;
-        case 'restore': restore(null, 15000); break;
+        case 'restore': restoreAtLogin(args[0] === '--once' ? 0 : 20000); break;
         case 'help': case '--help': case '-h': print(USAGE); break;
         default:
             printerr(`Unknown command: ${cmd}\n\n${USAGE}`);

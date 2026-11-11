@@ -5,5 +5,4 @@ Comment=Re-applies the HDR brightness you chose in Gleam (GNOME resets it to 100
 Exec=@EXEC@ restore
 NoDisplay=true
 X-GNOME-Autostart-enabled=true
-X-GNOME-Autostart-Phase=Applications
 OnlyShowIn=GNOME;Unity;
