@@ -1,10 +1,23 @@
 // Remembers HDR brightness per monitor. Mutter resets it to 100% whenever HDR turns on or at login.
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
 import * as DC from './displayconfig.js';
 
-const DIR = GLib.build_filenamev([GLib.get_user_config_dir(), 'gleam']);
+const DIR = GLib.build_filenamev([GLib.get_user_config_dir(), 'solstice']);
 const FILE = GLib.build_filenamev([DIR, 'settings.json']);
+
+// Solstice was called Gleam. Its saved files are copied over the first time; the old folder stays as a backup.
+function bringOver(oldDir, newDir) {
+    if (GLib.file_test(newDir, GLib.FileTest.EXISTS) || !GLib.file_test(oldDir, GLib.FileTest.IS_DIR))
+        return;
+    try {
+        Gio.Subprocess.new(['cp', '-a', oldDir, newDir], Gio.SubprocessFlags.NONE).wait(null);
+    } catch (e) {
+        // Starting fresh is fine.
+    }
+}
+bringOver(GLib.build_filenamev([GLib.get_user_config_dir(), 'gleam']), DIR);
 
 // Identify the monitor itself, not the port, so it survives moving cables.
 const key = mon => [mon.vendor, mon.product, mon.serial].join('|') || mon.connector;

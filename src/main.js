@@ -9,7 +9,7 @@ import * as Store from './store.js';
 import {openTestPattern} from './testpattern.js';
 import {applyToApp as applySedge} from './sedge/sedge.js';
 
-const APP_ID = 'io.github.webhookstudios.Gleam';
+const APP_ID = 'io.github.webhookstudios.Solstice';
 const SEDGE_DIR = GLib.build_filenamev([GLib.path_get_dirname(GLib.filename_from_uri(import.meta.url)[0]), 'sedge']);
 const CONFIRM_SECONDS = 15;
 const RGB_RANGES = [DC.RgbRange.AUTO, DC.RgbRange.FULL, DC.RgbRange.LIMITED];
@@ -18,7 +18,7 @@ const fmtNits = n => n < 0.001 ? 'below 0.001 nits'
     : (n >= 10 ? Math.round(n) : n >= 1 ? n.toFixed(1) : n.toFixed(3)) + ' nits';
 const hz = r => `${(Math.round(r * 100) / 100).toString()} Hz`;
 
-class GleamWindow {
+class SolsticeWindow {
     constructor(app) {
         this.win = new Adw.ApplicationWindow({application: app, title: 'Solstice', default_width: 600, default_height: 760});
         this.toasts = new Adw.ToastOverlay();
@@ -345,14 +345,14 @@ export function main(argv = []) {
     const about = new Gio.SimpleAction({name: 'about'});
     about.connect('activate', () => new Adw.AboutDialog({
         application_name: 'Solstice', application_icon: APP_ID, developer_name: 'webhookstudios',
-        website: 'https://github.com/webhookstudios/gleam', license_type: Gtk.License.GPL_2_0,
+        website: 'https://github.com/webhookstudios/solstice', license_type: Gtk.License.GPL_2_0,
         comments: 'HDR on and off for each display, and how bright normal content looks.\n\nPart of the Sedge family of apps.',
     }).present(app.active_window));
     app.add_action(about);
     app.connect('activate', () => {
         if (!app.active_window)
-            app.window = new GleamWindow(app);
+            app.window = new SolsticeWindow(app);
         app.active_window.present();
     });
-    return app.runAsync(['gleam', ...argv]);
+    return app.runAsync(['solstice', ...argv]);
 }

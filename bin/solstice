@@ -1,10 +1,10 @@
 #!/usr/bin/gjs -m
-// Starts Gleam. With a command (on, off, toggle, brightness, status) it runs on the command line.
-// GLEAM_DIR points at the folder holding main.js (a source checkout, for example).
+// Starts Solstice. With a command (on, off, toggle, brightness, status) it runs on the command line.
+// SOLSTICE_DIR points at the folder holding main.js (a source checkout, for example).
 import GLib from 'gi://GLib';
 import System from 'system';
 
-const dir = GLib.getenv('GLEAM_DIR') ?? '/usr/share/gleam';
+const dir = GLib.getenv('SOLSTICE_DIR') ?? '/usr/share/solstice';
 const args = ARGV;
 
 if (args.length && !args[0].startsWith('--gapplication')) {

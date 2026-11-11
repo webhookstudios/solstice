@@ -1,13 +1,13 @@
-// Command line: gleam on|off|toggle|brightness|status. Changes made here are saved right away.
+// Command line: solstice on|off|toggle|brightness|status. Changes made here are saved right away.
 import GLib from 'gi://GLib';
 
 import * as DC from './displayconfig.js';
 import {hdrInfo, summary} from './edid.js';
 import * as Store from './store.js';
 
-const USAGE = `Usage: gleam [COMMAND] [ARGS]
+const USAGE = `Usage: solstice [COMMAND] [ARGS]
 
-Without a command, opens the Gleam window.
+Without a command, opens the Solstice window.
 
 Commands:
   status                       Show HDR state and brightness for each display
@@ -16,11 +16,11 @@ Commands:
   toggle [CONNECTOR...]        Turn HDR on if any target is off, otherwise off
   brightness PERCENT [CONNECTOR...]
                                Set SDR content brightness in HDR (10-210, default 100)
-  restore [--once]             Re-apply remembered brightness. Gleam runs this at login;
+  restore [--once]             Re-apply remembered brightness. Solstice runs this at login;
                                it keeps watching for 20 seconds unless --once is given
   help                         Show this help
 
-Connectors are names like DP-1 or HDMI-A-1 (see "gleam status").`;
+Connectors are names like DP-1 or HDMI-A-1 (see "solstice status").`;
 
 const modeName = m => ({[DC.ColorMode.DEFAULT]: 'SDR', [DC.ColorMode.BT2100]: 'HDR',
     [DC.ColorMode.SDR_NATIVE]: 'SDR (wide gamut)'})[m] ?? `mode ${m}`;
@@ -71,11 +71,11 @@ function setHdr(names, on) {
 function setBrightness(args) {
     const value = Number(args[0]);
     if (!Number.isFinite(value))
-        throw new Error('brightness needs a number, for example: gleam brightness 120');
+        throw new Error('brightness needs a number, for example: solstice brightness 120');
     const state = DC.getState();
     const list = targets(state, args.slice(1)).filter(m => m.colorMode === DC.ColorMode.BT2100);
     if (!list.length)
-        throw new Error('HDR is off on the chosen displays. Turn it on first: gleam on');
+        throw new Error('HDR is off on the chosen displays. Turn it on first: solstice on');
     for (const m of list) {
         const v = DC.setBacklight(m.connector, value);
         Store.saveBrightness(m, v);
@@ -133,7 +133,7 @@ export function run(argv) {
             return 2;
         }
     } catch (e) {
-        printerr(`gleam: ${e.message}`);
+        printerr(`solstice: ${e.message}`);
         return 1;
     }
     return 0;

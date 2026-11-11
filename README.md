@@ -21,18 +21,18 @@ HDR settings for Ubuntu. Turn HDR on per display, and tune how bright normal con
 ## Command line and shortcuts
 
 ```
-gleam status                  # HDR state, brightness and panel info for each display
-gleam on [DP-1 ...]           # HDR on (all HDR displays if none given)
-gleam off [DP-1 ...]
-gleam toggle                  # good for a keyboard shortcut
-gleam brightness 120 [DP-1]   # SDR content brightness in HDR, saved per monitor
+solstice status                  # HDR state, brightness and panel info for each display
+solstice on [DP-1 ...]           # HDR on (all HDR displays if none given)
+solstice off [DP-1 ...]
+solstice toggle                  # good for a keyboard shortcut
+solstice brightness 120 [DP-1]   # SDR content brightness in HDR, saved per monitor
 ```
 
 Command-line changes are saved immediately, with no keep/revert prompt.
 
 Right-click Solstice in the dock or apps grid for **Turn HDR On**, **Turn HDR Off** and **Toggle HDR**.
 
-For a keyboard shortcut, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts and add one with the command `gleam toggle`.
+For a keyboard shortcut, go to Settings → Keyboard → View and Customize Shortcuts → Custom Shortcuts and add one with the command `solstice toggle`.
 
 ## Requirements
 
@@ -44,25 +44,25 @@ HDR must also be enabled in the monitor's own on-screen menu on some models, and
 
 ### With the deb package (recommended)
 
-Download `gleam_1.1.0_all.deb` from the [latest release](https://github.com/webhookstudios/gleam/releases/latest), then install it:
+Download `solstice_1.1.0_all.deb` from the [latest release](https://github.com/webhookstudios/solstice/releases/latest), then install it:
 
 ```bash
-sudo apt install ./gleam_1.1.0_all.deb
+sudo apt install ./solstice_1.1.0_all.deb
 ```
 
-Open Solstice from the apps menu. The package also adds a login item that re-applies your saved HDR brightness. Remove it with `sudo apt remove gleam`.
+Open Solstice from the apps menu. The package also adds a login item that re-applies your saved HDR brightness. Remove it with `sudo apt remove solstice`.
 
 ### From source, for the current user only
 
 ```bash
-git clone https://github.com/webhookstudios/gleam.git
-cd gleam
+git clone https://github.com/webhookstudios/solstice.git
+cd solstice
 ./install.sh
 ```
 
-This installs to `~/.local/share/gleam`, adds `gleam` to `~/.local/bin`, and adds the same login item. Remove it with `./install.sh --uninstall`.
+This installs to `~/.local/share/solstice`, adds `solstice` to `~/.local/bin`, and adds the same login item. Remove it with `./install.sh --uninstall`.
 
-To build the deb yourself, run `./build-deb.sh`; it writes `dist/gleam_<version>_all.deb`.
+To build the deb yourself, run `./build-deb.sh`; it writes `dist/solstice_<version>_all.deb`.
 
 ## How it works
 
@@ -70,7 +70,7 @@ Solstice talks to Mutter (GNOME's display server) over its `org.gnome.Mutter.Dis
 
 - HDR, wide gamut, refresh rate, VRR and RGB range go through `ApplyMonitorsConfig`. Kept changes are saved to `~/.config/monitors.xml` by Mutter.
 - SDR content brightness uses the software backlight Mutter offers for each display in HDR mode (`SetBacklight`).
-- Saved brightness lives in `~/.config/gleam/settings.json`, keyed by monitor vendor, model and serial number, so it follows the monitor to another port.
+- Saved brightness lives in `~/.config/solstice/settings.json`, keyed by monitor vendor, model and serial number, so it follows the monitor to another port.
 - Panel details are read from `/sys/class/drm/*/edid`.
 
 ## Limits

@@ -8,7 +8,7 @@ Icon=@ICON@
 Terminal=false
 Categories=Settings;HardwareSettings;GNOME;GTK;
 Keywords=gleam;sedge;hdr;display;monitor;brightness;nits;color;vrr;refresh;
-StartupWMClass=io.github.webhookstudios.Gleam
+StartupWMClass=io.github.webhookstudios.Solstice
 Actions=hdr-on;hdr-off;hdr-toggle;
 
 [Desktop Action hdr-on]
