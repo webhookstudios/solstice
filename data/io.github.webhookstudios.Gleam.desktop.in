@@ -1,13 +1,13 @@
 [Desktop Entry]
 Type=Application
-Name=Gleam
+Name=Solstice
 GenericName=HDR Settings
 Comment=Turn HDR on and tune brightness, refresh rate and color for each display
 Exec=@EXEC@
 Icon=@ICON@
 Terminal=false
 Categories=Settings;HardwareSettings;GNOME;GTK;
-Keywords=hdr;display;monitor;brightness;nits;color;vrr;refresh;
+Keywords=gleam;sedge;hdr;display;monitor;brightness;nits;color;vrr;refresh;
 StartupWMClass=io.github.webhookstudios.Gleam
 Actions=hdr-on;hdr-off;hdr-toggle;
 

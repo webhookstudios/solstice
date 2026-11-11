@@ -7,8 +7,10 @@ import * as DC from './displayconfig.js';
 import {hdrInfo, summary} from './edid.js';
 import * as Store from './store.js';
 import {openTestPattern} from './testpattern.js';
+import {applyToApp as applySedge} from './sedge/sedge.js';
 
 const APP_ID = 'io.github.webhookstudios.Gleam';
+const SEDGE_DIR = GLib.build_filenamev([GLib.path_get_dirname(GLib.filename_from_uri(import.meta.url)[0]), 'sedge']);
 const CONFIRM_SECONDS = 15;
 const RGB_RANGES = [DC.RgbRange.AUTO, DC.RgbRange.FULL, DC.RgbRange.LIMITED];
 
@@ -18,13 +20,16 @@ const hz = r => `${(Math.round(r * 100) / 100).toString()} Hz`;
 
 class GleamWindow {
     constructor(app) {
-        this.win = new Adw.ApplicationWindow({application: app, title: 'Gleam', default_width: 600, default_height: 760});
+        this.win = new Adw.ApplicationWindow({application: app, title: 'Solstice', default_width: 600, default_height: 760});
         this.toasts = new Adw.ToastOverlay();
         this.backlightRows = new Map();  // connector -> {scale, label, dragging}
         this.busy = false;  // true while a confirm dialog is open
         this.restorePending = new Set();  // connectors that just turned HDR on
 
         const header = new Adw.HeaderBar();
+        const menu = new Gio.Menu();
+        menu.append('About Solstice', 'app.about');
+        header.pack_end(new Gtk.MenuButton({icon_name: 'open-menu-symbolic', menu_model: menu, tooltip_text: 'Main menu'}));
         const patternBtn = new Gtk.Button({icon_name: 'view-grid-symbolic', tooltip_text: 'Brightness test pattern'});
         patternBtn.connect('clicked', () => openTestPattern(this.win));
         header.pack_end(patternBtn);
@@ -67,7 +72,7 @@ class GleamWindow {
             state = DC.getState();
         } catch (e) {
             this.view.set_content(new Adw.StatusPage({icon_name: 'dialog-error-symbolic',
-                title: 'Cannot read display settings', description: `Gleam needs GNOME on Wayland.\n${e.message}`}));
+                title: 'Cannot read display settings', description: `Solstice needs GNOME on Wayland.\n${e.message}`}));
             return;
         }
         this.state = state;
@@ -336,6 +341,14 @@ class GleamWindow {
 
 export function main(argv = []) {
     const app = new Adw.Application({application_id: APP_ID, flags: Gio.ApplicationFlags.DEFAULT_FLAGS});
+    app.connect('startup', () => applySedge(SEDGE_DIR));
+    const about = new Gio.SimpleAction({name: 'about'});
+    about.connect('activate', () => new Adw.AboutDialog({
+        application_name: 'Solstice', application_icon: APP_ID, developer_name: 'webhookstudios',
+        website: 'https://github.com/webhookstudios/gleam', license_type: Gtk.License.GPL_2_0,
+        comments: 'HDR on and off for each display, and how bright normal content looks.\n\nPart of the Sedge family of apps.',
+    }).present(app.active_window));
+    app.add_action(about);
     app.connect('activate', () => {
         if (!app.active_window)
             app.window = new GleamWindow(app);

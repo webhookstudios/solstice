@@ -42,7 +42,7 @@ function draw(_area, cr, width, height) {
 }
 
 export function openTestPattern(parent) {
-    const win = new Adw.Window({title: 'Gleam test pattern', default_width: 1100, default_height: 640, transient_for: null});
+    const win = new Adw.Window({title: 'Solstice test pattern', default_width: 1100, default_height: 640, transient_for: null});
     const area = new Gtk.DrawingArea({hexpand: true, vexpand: true});
     area.set_draw_func(draw);
 

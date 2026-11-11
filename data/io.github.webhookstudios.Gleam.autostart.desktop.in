@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=Gleam HDR brightness
+Name=Solstice HDR brightness
 Comment=Re-applies the HDR brightness you chose in Gleam (GNOME resets it to 100% at login)
 Exec=@EXEC@ restore
 NoDisplay=true

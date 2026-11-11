@@ -19,6 +19,8 @@ install -d "$STAGE/DEBIAN" "$STAGE/usr/bin" "$STAGE/usr/share/gleam" \
     "$STAGE/usr/share/doc/gleam" \
     "$STAGE/etc/xdg/autostart"
 install -m 644 "$ROOT"/src/*.js "$STAGE/usr/share/gleam/"
+cp -r "$ROOT/src/sedge" "$STAGE/usr/share/gleam/"
+find "$STAGE/usr/share/gleam/sedge" -type f -exec chmod 644 {} +
 install -m 755 "$ROOT/bin/gleam" "$STAGE/usr/bin/gleam"
 install -m 644 "$ROOT/data/$APP_ID.svg" "$STAGE/usr/share/icons/hicolor/scalable/apps/"
 sed -e 's|@EXEC@|gleam|' -e "s|@ICON@|$APP_ID|" "$ROOT/data/$APP_ID.desktop.in" \
@@ -30,7 +32,7 @@ echo "/etc/xdg/autostart/$APP_ID.autostart.desktop" > "$STAGE/DEBIAN/conffiles"
 
 cat > "$STAGE/usr/share/doc/gleam/copyright" <<EOT
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Gleam
+Upstream-Name: Solstice (formerly Gleam)
 Source: https://github.com/webhookstudios/gleam
 
 Files: *
@@ -38,6 +40,11 @@ Copyright: $(date +%Y) webhookstudios
 License: GPL-2+
  On Debian systems, the full text of the GNU General Public License
  version 2 can be found in /usr/share/common-licenses/GPL-2.
+
+Files: */sedge/fonts/*
+Copyright: 2023 The Young Serif Project Authors; 2015 The Public Sans Project Authors
+License: OFL-1.1
+ The full license texts are in the sedge/fonts/ folder.
 EOT
 chmod 644 "$STAGE/usr/share/doc/gleam/copyright"
 
@@ -52,7 +59,7 @@ Section: gnome
 Priority: optional
 Homepage: https://github.com/webhookstudios/gleam
 Description: HDR settings and tuning for GNOME
- Gleam turns HDR on and off for each display and tunes how bright normal
+ Solstice (formerly Gleam) turns HDR on and off for each display and tunes how bright normal
  content looks in HDR. It also sets refresh rate, variable refresh rate,
  RGB range and wide color gamut, shows what each panel reports about its
  HDR abilities, and has a command line for keyboard shortcuts.
